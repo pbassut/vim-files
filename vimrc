@@ -9,7 +9,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Bundle 'mileszs/ack.vim'
 Bundle 'Valloric/YouCompleteMe'
 
 Plugin 'bling/vim-airline'
@@ -17,10 +16,16 @@ Plugin 'sjl/badwolf'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-commentary'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'toyamarinyon/vim-swift'
 Plugin 'xolox/vim-session'
 Plugin 'xolox/vim-misc'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Raimondi/delimitMate'
+Plugin 'mileszs/ack.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'nvie/vim-flake8'
+Plugin 'easymotion/vim-easymotion'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -55,7 +60,9 @@ set nu
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 " Ignore some files
-let g:ctrlp_custom_ignore = 'tmp$\|\.git$\|\.hg$\|\.svn$'
+let g:ctrlp_custom_ignore='tmp$\|\.git$\|\.hg$\|\.svn$\|\.pyc$\|\.png$\|\.jpg$\|\.otf$\|\.woff$\|\.mp3$\|\.ico$\|\.pdf$\|\.woff2$\|\.ttf$\|\.eot$\|\.svg$'
+
+" Ignores .pyc files from searches and stuff
 
 let g:ycm_autoclose_preview_window_after_completion=1
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -78,15 +85,39 @@ noremap L $
 noremap <leader>fs :set lines=999 columns=9999<cr>
 
 " Easy buffer navigation
-nnoremap <leader>> :bn<CR>
-nnoremap <leader>< :bp<CR>
+nnoremap gn :bn<CR>
+nnoremap gp :bp<CR>
+nnoremap gd :bw<CR>
 
-" Ignores .pyc files from searches and stuff
-set wildignore+=*.pyc,\./_sql/*,\./media/*,\./bin/*,\./migrations/*,\./lib/*,\./media/*,\./include/*
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+nmap <S-Enter> O<Esc>
 
 colorscheme badwolf
 
 set relativenumber
 
 let g:session_autosave = 'yes'
+let g:session_autoload = 'no'
+
+" tell it to use an undo file
+set undofile
+set undodir=~/.vimundo/
+
+" Supress warning when moving out from unsaved buffers
+set hidden
+
+" Supress warning when reloading file
+setl autoread
+
+silent! nmap <C-n> :NERDTreeToggle<CR>
+silent! map <F3> :NERDTreeFind<CR>
+
+let g:NERDTreeMapActivateNode="<F3>"
+let g:NERDTreeMapPreview="<F4>"
+
+" Map for tagbar
+nmap <F8> :TagbarToggle<CR>
+
+
+if filereadable('.vimrclocal')
+  so .vimrclocal
+endif
